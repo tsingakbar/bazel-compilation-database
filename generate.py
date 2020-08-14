@@ -30,5 +30,5 @@ db_entries = []
 for db in dbs:
     with open(db, 'r') as file:
         db_entries.extend(json.loads(f"[{file.read()}]"))
-with open('compile_command.json', 'w') as outdb:
+with open('compile_commands.json', 'w') as outdb:
     json.dump(db_entries, outdb, indent=2)
