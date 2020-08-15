@@ -42,7 +42,7 @@ for db in dbs:
 def replace_bazel_var(db_entry):
     if "directory" in db_entry and db_entry["directory"] == "__EXEC_ROOT__":
         db_entry["directory"] = bazel_exec_root
-        return db_entry
+    return db_entry
 db_entries = list(map(replace_bazel_var, db_entries))
 print(f">> generate {len(db_entries)} entries to compile_commands.json")
 with open('compile_commands.json', 'w') as outdb:
