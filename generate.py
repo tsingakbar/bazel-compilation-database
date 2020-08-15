@@ -30,5 +30,14 @@ db_entries = []
 for db in dbs:
     with open(db, 'r') as file:
         db_entries.extend(json.loads(f"[{file.read()}]"))
+bazel_workspace = subprocess.run(
+    ["bazel", "info", "workspace"],
+    stdout=subprocess.PIPE).stdout.decode('utf-8').splitlines()[0]
+def replace_bazel_var(db_entry):
+    if "directory" in db_entry and db_entry["directory"] == "__EXEC_ROOT__":
+        db_entry["directory"] = bazel_workspace
+        return db_entry
+db_entries = list(map(replace_bazel_var, db_entries))
+print(f">> generate {len(db_entries)} entries to compile_commands.json")
 with open('compile_commands.json', 'w') as outdb:
     json.dump(db_entries, outdb, indent=2)
